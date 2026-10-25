@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="{{ 'no' if lang == 'no' else 'en' }}">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{{ q.intro }}"><title>{{ q.title }} — {{ t.brand }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"><link rel="stylesheet" href="{{ url_for('static', filename='extra.css') }}">
+  <script defer src="{{ url_for('static', filename='quiz.js') }}"></script>
+</head>
+<body class="quiz-page">
+  <header class="topbar"><a class="brand" href="{{ url_for('index', lang=lang) }}"><span class="brand-mark">D</span> {{ t.brand }}</a><a class="back-link" href="{{ url_for('index', lang=lang) }}">{{ q.home }}</a><a class="language" href="{{ url_for('quiz_page', lang='en' if lang == 'no' else 'no') }}" lang="{{ 'en' if lang == 'no' else 'no' }}">{{ t.lang }}</a></header>
+  <main class="quiz-main" data-lang="{{ lang }}" data-quiz-text='{{ q|tojson }}'>
+    <section class="quiz-heading"><span class="eyebrow">DINOATLAS · {{ q.title|upper }}</span><h1>{{ q.subtitle }}</h1><p>{{ q.intro }}</p></section>
+    <section class="quiz-card" aria-labelledby="question-text">
+      <div id="quiz-progress-wrap"><div class="quiz-progress-label"><span>{{ q.question }} <b id="question-number">1</b> {{ q.progress }} 10</span><span id="question-kind">{{ q.regular }}</span></div><div class="quiz-progress"><span id="progress-bar"></span></div></div>
+      <div id="question-panel"><div id="question-badge" class="question-badge">{{ q.regular }}</div><h2 id="question-text">{{ q.empty }}</h2><div id="answer-options" class="answer-options"></div><div id="feedback" class="answer-feedback" aria-live="polite" hidden></div><button id="next-question" class="next-question" type="button" disabled>{{ q.next }}</button></div>
+      <div id="result-panel" class="result-panel" hidden><div class="result-star">✳</div><span class="eyebrow">{{ q.title|upper }}</span><h2 id="result-score"></h2><p id="result-message"></p><button id="restart-quiz" class="next-question" type="button">{{ q.again }}</button></div>
+    </section>
+    <p class="quiz-note">{{ q.footer }}</p>
+  </main>
+  <footer><a class="brand" href="{{ url_for('index', lang=lang) }}"><span class="brand-mark">D</span> {{ t.brand }}</a><span>{{ t.footer }} <span class="footer-star">✳</span></span></footer>
+  <script id="question-bank" type="application/json">{{ question_bank|tojson }}</script>
+</body>
+</html>

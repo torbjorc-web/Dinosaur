@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="{{ 'no' if lang == 'no' else 'en' }}">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{{ category.description }}"><title>{{ category.title }} — {{ t.brand }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"><link rel="stylesheet" href="{{ url_for('static', filename='extra.css') }}">
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="{{ url_for('index', lang=lang) }}"><span class="brand-mark">D</span> {{ t.brand }}</a><a class="back-link" href="{{ url_for('index', lang=lang) }}">← {{ 'Forsiden' if lang == 'no' else 'Home' }}</a><a class="language" href="{{ url_for('category_page', slug=slug, lang='en' if lang == 'no' else 'no') }}" lang="{{ 'en' if lang == 'no' else 'no' }}">{{ t.lang }}</a></header>
+  <nav class="category-nav" aria-label="{{ 'Kategorier' if lang == 'no' else 'Categories' }}">{% for category_slug, category_item in categories.items() %}<a class="{{ 'active' if category_slug == slug else '' }}" href="{{ url_for('category_page', slug=category_slug, lang=lang) }}">{{ category_item.title }}</a>{% endfor %}<a class="quiz-nav" href="{{ url_for('quiz_page', lang=lang) }}">✳ Quiz</a></nav>
+  <main class="category-main">
+    {% include '_search.html' %}
+    <section class="category-intro"><span class="eyebrow">{{ t.catalog }}</span><h1>{{ category.title }}</h1><p class="category-subtitle">{{ category.subtitle }}</p><p class="category-description">{{ category.description }}</p></section>
+    {% if slug in ('havet', 'luften') %}<aside class="classification-note"><span>✳</span><p>{{ 'Dette er forhistoriske krypdyr som levde samtidig med dinosaurene, men de regnes ikke som dinosaurer.' if lang == 'no' else 'These are prehistoric reptiles that lived alongside dinosaurs, but they are not classified as dinosaurs.' }}</p></aside>{% endif %}
+    <div class="section-heading category-heading"><div><span class="eyebrow">{{ t.catalog }}</span><h2>{{ items|length }} {{ 'arter' if lang == 'no' else 'species' }}</h2></div></div>
+    <div class="category-grid">{% for dino in items %}<article class="category-card"><a class="category-photo {{ dino.color }}" href="{{ url_for('dinosaur_detail', slug=dino.slug, lang=lang) }}"><img src="{{ dino.image_url }}" alt="{{ dino.name }} fossil or museum skeleton" loading="lazy"><span class="card-period">{{ dino.period }} · {{ dino.dates_display }}</span></a>
+      <div class="category-card-body"><span class="eyebrow">{{ dino.group }}</span><h3>{{ dino.name }}</h3><p class="nickname">{{ dino.nickname }}</p><p>{{ dino.description }}</p><div class="category-facts"><span>{{ '🌿' if dino.diet_kind == 'plant' else '🥩' }} {{ dino.diet }}</span><span>{{ dino.length }}</span></div><details><summary>{{ 'Flere fakta' if lang == 'no' else 'More facts' }}</summary><dl><dt>{{ t.features }}</dt><dd>{{ dino.features }}</dd><dt>{{ t.discovery }}</dt><dd>{{ dino.discovery }}</dd><dt>{{ t.fact }}</dt><dd>{{ dino.fact }}</dd><dt>{{ t.place }}</dt><dd>{{ dino.location }}</dd></dl></details><a class="image-credit-link" href="{{ dino.image_source }}" target="_blank" rel="noreferrer">{{ dino.image_credit }} · Wikimedia Commons ↗</a></div>
+    </article>{% endfor %}</div>
+  </main>
+  <footer><a class="brand" href="{{ url_for('index', lang=lang) }}"><span class="brand-mark">D</span> {{ t.brand }}</a><span>{{ t.footer }} <span class="footer-star">✳</span></span></footer>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="{{ 'no' if lang == 'no' else 'en' }}">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{{ t.intro }}"><title>{{ t.title }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"><link rel="stylesheet" href="{{ url_for('static', filename='extra.css') }}">
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="{{ url_for('index', lang=lang) }}"><span class="brand-mark">D</span> {{ t.brand }}</a><span class="top-note">{{ t.tagline }}</span><a class="language" href="{{ url_for('index', lang='en' if lang == 'no' else 'no') }}" lang="{{ 'en' if lang == 'no' else 'no' }}">{{ t.lang }}</a></header>
+  <nav class="category-nav" aria-label="{{ 'Kategorier' if lang == 'no' else 'Categories' }}">{% for category_slug, category_item in categories.items() %}<a href="{{ url_for('category_page', slug=category_slug, lang=lang) }}">{{ category_item.title }}</a>{% endfor %}<a class="quiz-nav" href="{{ url_for('quiz_page', lang=lang) }}">✳ {{ 'Quiz' if lang == 'no' else 'Quiz' }}</a></nav>
+  <main>
+    {% include '_search.html' %}
+    <section class="hero"><div class="hero-copy"><span class="eyebrow"><span class="dot"></span> {{ t.eyebrow }}</span><h1>{{ t.headline1 }}<br><em>{{ t.headline2 }}</em></h1><p>{{ t.intro }}</p><a class="hero-link" href="#dinosaurer">{{ t.meet }} <span>↓</span></a></div>
+      <div class="hero-art" aria-hidden="true"><div class="sun"></div><div class="hill hill-back"></div><div class="hill hill-front"></div><span class="hero-dino">🦕</span><span class="spark spark-one">✳</span><span class="spark spark-two">✦</span><span class="era-tag">MESOZOICUM<br><small>252–66 {{ t.era }}</small></span></div>
+    </section>
+    <section class="catalog" id="dinosaurer"><div class="section-heading"><div><span class="eyebrow">{{ t.catalog }}</span><h2>{{ t.question }}</h2></div><span class="count">{{ dinosaurs|length }} {{ t.species }}</span></div>
+      <div class="grid">{% for dino in dinosaurs %}<a class="dino-card" href="{{ url_for('dinosaur_detail', slug=dino.slug, lang=lang) }}"><div class="card-art photo-card {{ dino.color }}"><img src="{{ dino.image_url }}" alt="{{ dino.name }} fossil skeleton" loading="lazy"><span class="card-period">{{ dino.period }} · {{ dino.dates_display }}</span><span class="photo-label">PHOTO</span></div><div class="card-body"><div class="card-title"><h3>{{ dino.name }}</h3><span class="arrow">↗</span></div><p class="nickname">{{ dino.nickname }}</p><div class="card-meta"><span>{{ '🌿' if dino.diet_kind == 'plant' else '🥩' }} {{ dino.diet }}</span><span>{{ dino.length }}</span></div><span class="photo-source">Photo: <span>Wikimedia Commons</span></span></div></a>{% endfor %}</div>
+    </section>
+    <aside class="timeline"><div class="timeline-icon">⌛</div><div><span class="eyebrow">{{ t.timeline }}</span><p>{{ t.timeline_text }}</p></div><div class="timeline-years"><span>252 {{ t.era }}</span><span class="timeline-line"></span><span>66 {{ t.era }}</span></div></aside>
+  </main>
+  <footer><a class="brand" href="{{ url_for('index', lang=lang) }}"><span class="brand-mark">D</span> {{ t.brand }}</a><span>{{ t.footer }} <span class="footer-star">✳</span></span></footer>
+</body>
+</html>

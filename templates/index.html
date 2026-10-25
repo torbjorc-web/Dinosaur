@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="no">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Møt dinosaurene og lær når de levde, hva de spiste og hva som gjorde dem spesielle.">
+  <title>Dinoatlas — oppdag dinosaurene</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="/"><span class="brand-mark">D</span> Dinoatlas</a><span class="top-note">Et lite oppslagsverk om fortidens kjemper</span></header>
+  <main>
+    <section class="hero">
+      <div class="hero-copy"><span class="eyebrow"><span class="dot"></span> LIVET PÅ JORDA, FOR LENGE SIDEN</span>
+        <h1>En verden full<br>av <em>giganter.</em></h1>
+        <p>Fra den fryktinngytende T. rex til fredelige langhalser — bli kjent med noen av dinosaurene som en gang vandret på jorda.</p>
+        <a class="hero-link" href="#dinosaurer">Møt dinosaurene <span>↓</span></a>
+      </div>
+      <div class="hero-art" aria-hidden="true"><div class="sun"></div><div class="hill hill-back"></div><div class="hill hill-front"></div><span class="hero-dino">🦕</span><span class="spark spark-one">✳</span><span class="spark spark-two">✦</span><span class="era-tag">MESOZOIKUM<br><small>252–66 millioner år siden</small></span></div>
+    </section>
+    <section class="catalog" id="dinosaurer">
+      <div class="section-heading"><div><span class="eyebrow">DINOSAURLEKSIKON</span><h2>Hvem vil du møte?</h2></div><span class="count">{{ dinosaurs|length }} dinosaurer</span></div>
+      <div class="grid">
+        {% for dino in dinosaurs %}
+        <a class="dino-card" href="{{ url_for('dinosaur_detail', slug=dino.slug) }}">
+          <div class="card-art {{ dino.color }}"><span class="card-period">{{ dino.period.split(' · ')[0] }}</span><span class="dino-icon">{{ dino.emoji }}</span><span class="art-circle"></span></div>
+          <div class="card-body"><div class="card-title"><h3>{{ dino.name }}</h3><span class="arrow">↗</span></div><p class="nickname">{{ dino.nickname }}</p><div class="card-meta"><span>{{ '🌿' if dino.diet == 'Planteeter' else '🥩' }} {{ dino.diet }}</span><span>{{ dino.length }}</span></div></div>
+        </a>
+        {% endfor %}
+      </div>
+    </section>
+    <aside class="timeline"><div class="timeline-icon">⌛</div><div><span class="eyebrow">ET LITE TIDSHOPP</span><p>Dinosaurene levde i <strong>mesozoikum</strong>, en periode som varte i over 180 millioner år. De fleste ble utryddet for omtrent 66 millioner år siden.</p></div><div class="timeline-years"><span>252 mill. år siden</span><span class="timeline-line"></span><span>66 mill. år siden</span></div></aside>
+  </main>
+  <footer><a class="brand" href="/"><span class="brand-mark">D</span> Dinoatlas</a><span>Laget for nysgjerrige oppdagere <span class="footer-star">✳</span></span></footer>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="{{ 'no' if lang == 'no' else 'en' }}">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{{ dinosaur.name }} — {{ dinosaur.description }}"><title>{{ dinosaur.name }} — {{ t.brand }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"><link rel="stylesheet" href="{{ url_for('static', filename='extra.css') }}">
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="{{ url_for('index', lang=lang) }}"><span class="brand-mark">D</span> {{ t.brand }}</a><a class="back-link" href="{{ url_for('index', lang=lang) }}#dinosaurer">{{ t.back }}</a><a class="back-link quiz-header-link" href="{{ url_for('quiz_page', lang=lang) }}">✳ Quiz</a><a class="language" href="{{ url_for('dinosaur_detail', slug=dinosaur.slug, lang='en' if lang == 'no' else 'no') }}" lang="{{ 'en' if lang == 'no' else 'no' }}">{{ t.lang }}</a></header>
+  <main class="detail-main"><a class="back-mobile" href="{{ url_for('index', lang=lang) }}#dinosaurer">{{ t.back }}</a>
+    {% include '_search.html' %}
+    <section class="detail-hero"><figure class="detail-art photo-detail {{ dinosaur.color }}"><img src="{{ dinosaur.image_url }}" alt="{{ dinosaur.name }} fossil skeleton" fetchpriority="high"><span class="detail-period">{{ dinosaur.period }} · {{ dinosaur.dates_display }}</span><figcaption class="photo-credit"><a href="{{ dinosaur.image_source }}" target="_blank" rel="noreferrer">{{ dinosaur.image_credit }} · Wikimedia Commons ↗</a></figcaption></figure>
+      <div class="detail-copy"><span class="eyebrow">{{ dinosaur.nickname|upper }}</span><h1>{{ dinosaur.name }}</h1><p class="detail-era">{{ dinosaur.period }} · {{ dinosaur.dates_display }}</p><p class="detail-description">{{ dinosaur.description }}</p>
+        <div class="stats"><div><span>{{ t.diet }}</span><strong>{{ '🌿' if dinosaur.diet_kind == 'plant' else '🥩' }} {{ dinosaur.diet }}</strong></div><div><span>{{ t.size }}</span><strong>{{ dinosaur.length }}</strong></div><div><span>{{ t.weight }}</span><strong>{{ dinosaur.weight }}</strong></div></div>
+        <div class="info-list"><div><span>{{ t.group }}</span><p>{{ dinosaur.group }}</p></div><div><span>{{ t.place }}</span><p>{{ dinosaur.location }}</p></div><div><span>{{ t.features }}</span><p>{{ dinosaur.features }}</p></div><div><span>{{ t.discovery }}</span><p>{{ dinosaur.discovery }}</p></div></div>
+        <aside class="fact-box"><span>✳</span><p><strong>{{ t.fact }}</strong><br>{{ dinosaur.fact }}</p></aside>
+      </div>
+    </section><a class="more-link" href="{{ url_for('index', lang=lang) }}#dinosaurer">{{ t.back }}</a>
+  </main>
+  <footer><a class="brand" href="{{ url_for('index', lang=lang) }}"><span class="brand-mark">D</span> {{ t.brand }}</a><span>{{ t.footer }} <span class="footer-star">✳</span></span></footer>
+</body>
+</html>
